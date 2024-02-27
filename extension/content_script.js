@@ -1,10 +1,12 @@
 let scripts = [
-  "/sdk/signature_sdk.js",
   "/sdk/stu-sdk.min.js",
+  "sigCaptDialog/stu_capture/aes-ecb.js",
+  "sigCaptDialog/stu_capture/stu_capture_encryption.js",
+  "/sdk/signature_sdk.js",
   "sigCaptDialog/sigCaptDialog.js",
   "sigCaptDialog/stuCaptDialog.js",
-  "test.js",
   "simple.js",
+  "test.js",
 ];
 
 var s = document.createElement("script");

@@ -12,6 +12,7 @@ Module.onAbort = (_) => {
 };
 
 Module.onRuntimeInitialized = (_) => {
+  alert("Web browser supported");
   document.getElementById("version_txt").innerHTML = Module.VERSION;
   mSigObj = new Module.SigObj();
   mHash = new Module.Hash(Module.HashType.SHA512);
