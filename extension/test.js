@@ -21,7 +21,7 @@
 `;
   document.body.appendChild(div);
 
-  console.log("inserted self... giggity");
+  console.log("Inyectado 💉");
 })();
 
 function hola() {
