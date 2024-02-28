@@ -12,8 +12,6 @@ Module.onAbort = (_) => {
 };
 
 Module.onRuntimeInitialized = (_) => {
-  alert("Web browser supported");
-  document.getElementById("version_txt").innerHTML = Module.VERSION;
   mSigObj = new Module.SigObj();
   mHash = new Module.Hash(Module.HashType.SHA512);
 
@@ -29,13 +27,10 @@ Module.onRuntimeInitialized = (_) => {
   );
   promise.then((value) => {
     if (value) {
-      if (navigator.hid) {
-        document.getElementById("capture_stu_device").disabled = false;
+      console.log("Licencia WACOM cargada correctamente");
+      if (!navigator.hid) {
+        alert("WebHID no soportado");
       }
-
-      document.getElementById("canvas_capture_btn").disabled = false;
-      document.getElementById("initializeBanground").style.display = "none";
-      document.getElementById("myfile").disabled = false;
     }
   });
   promise.catch((error) => {
@@ -132,8 +127,7 @@ async function renderSignature() {
     renderWidth += renderWidth % 4;
   }
 
-  let canvas;
-  const inkColor = "#000F55";
+  const inkColor = "#000";
   try {
     const image = await mSigObj.renderBitmap(
       renderWidth,
@@ -147,9 +141,9 @@ async function renderSignature() {
       0x400000
     );
     document.getElementById("sig_image").src = image;
-    document.getElementById("sig_text").value = await mSigObj.getTextData(
-      Module.TextFormat.BASE64
-    );
+    // document.getElementById("sig_text").value = await mSigObj.getTextData(
+    // Module.TextFormat.BASE64
+    // );
   } catch (e) {
     alert(e);
   }
@@ -157,10 +151,12 @@ async function renderSignature() {
 
 function captureFromCanvas() {
   const config = {};
+
+  config.title = "HOLA";
   config.source = {
-    mouse: document.getElementById("allow_mouse_check").checked,
-    touch: document.getElementById("allow_touch_check").checked,
-    pen: document.getElementById("allow_pen_check").checked,
+    mouse: true,
+    touch: true,
+    pen: true,
   };
 
   const sigCaptDialog = new SigCaptDialog(config);

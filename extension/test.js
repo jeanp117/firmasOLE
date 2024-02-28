@@ -6,139 +6,89 @@
   div.style.position = "fixed";
   div.style.top = 0;
   div.style.right = 0;
-  div.innerHTML = `<!--
-    Copyright (C) 2023 Wacom.
-	Use of this source code is governed by the MIT License that can be found in the LICENSE file.
--->
-<!DOCTYPE html>
+  div.innerHTML = ` 
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-    />
-    <title>Signature SDK - Simple demo</title>
+<img id="sig_image" style="display: none; margin: auto" />
 
-    <script src="../common/libs/signature_sdk/stu-sdk.min.js"></script>
-    <!-- used to connect to STU devices -->
-    <script src="../../sigCaptDialog/stu_capture/aes-ecb.js"></script>
-    <!-- utility for STU encryption -->
-    <script src="../../sigCaptDialog/stu_capture/stu_capture_encryption.js"></script>
-    <!-- STU encryption functions -->
-
-    <script src="../common/libs/signature_sdk/signature_sdk.js"></script>
-    <!-- signature SDK -->
-
-    <script src="../../sigCaptDialog/sigCaptDialog.js"></script>
-    <script src="../../sigCaptDialog/stuCaptDialog.js"></script>
-
-    <script src="simple.js"></script>
-  </head>
-  <body>
-    <div
-      id="initializeBanground"
-      class="active"
-      style="width: 100%; height: 100%; position: fixed; background: #cccccccc"
-    >
-      <div
-        style="
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-        "
-      >
-        <table>
-          <tr>
-            <td><div class="loader"></div></td>
-            <td>Initializing, this could take a few seconds...</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <h1>Signature SDK <span id="version_txt"></span>- Simple demo</h1>
-    <ul>
-      <li>
-        <br />
-      </li>
-
-      <li>
-        Capture with STU device. This makes use of STU-SDK for javascript, and
-        it is only supported on web browsers that supports WebHID. You can see
-        <a href="https://caniuse.com/?search=webhid"
-          >here the list of compatible browsers</a
-        >. <br /><br /><button
-          id="capture_stu_device"
-          onClick="captureFromSTU()"
-          disabled="disabled"
-        >
-          Capture with STU device
-        </button>
-      </li>
-      <br />
-      <li>
-        <div>
-          Capture the signature using standard javascript events.
-          <br /><br />
-          <input
-            type="checkbox"
-            name="allow_mouse_check"
-            id="allow_mouse_check"
-            checked="checked"
-          />
-          <label for="allow_mouse_check">Allow mouse input</label>
-          &nbsp;&nbsp;
-          <input
-            type="checkbox"
-            name="allow_touch_check"
-            id="allow_touch_check"
-            checked="checked"
-          />
-          <label for="allow_touch_check">Allow touch</label>
-          &nbsp;&nbsp;
-          <input
-            type="checkbox"
-            name="allow_pen_check"
-            id="allow_pen_check"
-            checked="checked"
-          />
-          <label for="allow_pen_check">Allow pen</label>
-          &nbsp;&nbsp;
-          <br /><br />
-          <button
-            type="button"
-            id="canvas_capture_btn"
-            onClick="captureFromCanvas()"
-            disabled="disabled"
-          >
-            Capture with Generic Canvas
-          </button>
-        </div>
-      </li>
-    </ul>
-    <fieldset
-      id="signature_image"
-      style="width:310px;height:210px; display: flex;justify-content: center;align-items: center;"
-    >
-      <legend>Signature image:</legend>
-      <img id="sig_image" style="display: block; margin: auto" />
-    </fieldset>
-    <br />
-    <fieldset id="signature_text" style="width: 620px; height: 210px">
-      <legend>Signature text:</legend>
-      <textarea id="sig_text" style="width: 100%; height: 100%"></textarea>
-    </fieldset>
-  </body>
+<canvas id="output-canvas" style="display: block"></canvas>
 </html>
+
 
 `;
   document.body.appendChild(div);
 
+  let inputSeleccionado = null;
+
+  //find all input files and add a custom button before them
+  const inputs = document.querySelectorAll("input[type=file]");
+  inputs.forEach((input) => {
+    const button = document.createElement("button");
+    button.innerHTML = "Firmar";
+    button.style.marginRight = "10px";
+    button.style.borderRadius = "5px";
+    button.style.backgroundColor = "blue";
+    button.style.color = "white";
+
+    button.onclick = () => {
+      // captureFromCanvas();
+      captureFromSTU();
+      inputSeleccionado = input;
+    };
+    input.before(button);
+  });
+
+  //get the image base64 data and put it in the canvas
+  const img = document.getElementById("sig_image");
+  const canvas = document.getElementById("output-canvas");
+
+  img.onload = () => {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx.filter = "brightness(1.25)";
+
+    ctx.drawImage(img, 0, 0);
+
+    // //save the image in the canvas
+    // const dataURL = canvas.toDataURL("image/png");
+
+    convertirCanvasAInputFile(canvas, inputSeleccionado);
+
+    inputSeleccionado.style.backgroundColor = "green";
+
+    // console.log(dataURL);
+
+    // const a = document.createElement("a");
+    // a.href = dataURL;
+    // a.download = "signature.png";
+    // a.click();
+  };
+
   console.log("Inyectado 💉");
 })();
+function convertirCanvasAInputFile(canvas, fileInput) {
+  // Convertir el contenido del canvas en un Blob
+  canvas.toBlob(function (blob) {
+    // Crear un archivo desde el Blob
+    const file = new File([blob], "imagen.png", { type: "image/png" });
 
-function hola() {
-  alert("Hola");
+    // Crear un DataTransfer y agregar el archivo
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+
+    // Asignar el DataTransfer al input file
+    fileInput.files = dataTransfer.files;
+  }, "image/png");
+}
+
+function dataURLtoFile(dataurl, filename) {
+  var arr = dataurl.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[arr.length - 1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, { type: mime });
 }
