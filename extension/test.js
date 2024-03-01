@@ -10,7 +10,7 @@
 <html>
 <img id="sig_image" style="display: none; margin: auto" />
 
-<canvas id="output-canvas" style="display: block"></canvas>
+<canvas id="output-canvas" style="display: none"></canvas>
 </html>
 
 
@@ -20,8 +20,12 @@
   let inputSeleccionado = null;
 
   //find all input files and add a custom button before them
+  const inputsCanvas = document.querySelectorAll("#signature");
   const inputs = document.querySelectorAll("input[type=file]");
-  inputs.forEach((input) => {
+
+  inputsCanvas.forEach(handle);
+  inputs.forEach(handle);
+  function handle(elemento) {
     const button = document.createElement("button");
     button.innerHTML = "Firmar";
     button.style.marginRight = "10px";
@@ -29,17 +33,25 @@
     button.style.backgroundColor = "blue";
     button.style.color = "white";
 
-    button.onclick = () => {
-      // captureFromCanvas();
+    button.onclick = (e) => {
+      e.preventDefault();
+
+      //captureFromCanvas();
       captureFromSTU();
-      inputSeleccionado = input;
+      // inputSeleccionado = input;
     };
-    input.before(button);
-  });
+    elemento.before(button);
+
+    //is elemento a input file
+    if (elemento.type === "file") {
+      inputSeleccionado = elemento;
+    }
+  }
 
   //get the image base64 data and put it in the canvas
   const img = document.getElementById("sig_image");
   const canvas = document.getElementById("output-canvas");
+  const docusCanvas = document.getElementsByClassName("jSignature")[0];
 
   img.onload = () => {
     canvas.width = img.width;
@@ -49,12 +61,19 @@
 
     ctx.drawImage(img, 0, 0);
 
-    // //save the image in the canvas
-    // const dataURL = canvas.toDataURL("image/png");
+    //copy the image from canvas to docusCanvas
+    const docusCtx = docusCanvas.getContext("2d");
+    docusCtx.drawImage(canvas, 0, 0);
 
+    // //save the image in the canvas
+    const dataURL = canvas.toDataURL("image/png");
+
+    $("#signature_capture").val(dataURL);
+    $("#base64Load").val(dataURL);
     convertirCanvasAInputFile(canvas, inputSeleccionado);
 
     inputSeleccionado.style.backgroundColor = "green";
+    inputSeleccionado.files = dataURLtoFile(dataURL, "firma.png");
 
     // console.log(dataURL);
 

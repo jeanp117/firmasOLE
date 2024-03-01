@@ -152,7 +152,6 @@ async function renderSignature() {
 function captureFromCanvas() {
   const config = {};
 
-  config.title = "HOLA";
   config.source = {
     mouse: true,
     touch: true,
