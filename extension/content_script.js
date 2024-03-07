@@ -14,7 +14,7 @@ var s = document.createElement("script");
 let hostList = ["grupo-esperanza.docus.com.co", "orglaesperanza.com.co"];
 
 let currentHost = window.location.host;
-if (hostList.includes(currentHost)) {
+if (hostList.includes(currentHost) || true) {
   scripts.forEach((script) => {
     var s = document.createElement("script");
     // Para que esto funcione deberías añadir "script.js" a web_accessible_resources en manifest.json
