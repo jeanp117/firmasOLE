@@ -9,34 +9,5 @@
     <input type="file" name="" id="prueba" />
     <input type="file" name="" id="prueba2" />
     <input type="file" name="" id="prueba2" />
-
-    <script>
-      let token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0dW5vbWJyZS5jb20iLCJhdWQiOiJ0dW5vbWJyZS5jb20iLCJpYXQiOjE3MDkyNDY1MzAsImV4cCI6MTcwOTI1MDEzMCwiZGF0YSI6eyJ1c2VyIjoicHJ1ZWJhcyIsInB3ZCI6IjUyZjNmNDdhMTM4MmI1YjIwYjUxMjc5YTFkM2NkMDczIn19.K+B/PkvCYOMrFEVILgCpakAS2y1ecGdXhtWXYKarzdg=";
-
-      const raw = JSON.stringify({
-        codigo: "01064",
-        suc: "CUC",
-      });
-
-      const requestOptions = {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: raw,
-        redirect: "follow",
-      };
-
-      fetch(
-        "http://api.orglaesperanza.com:82/wsle/v2/getNomEmp",
-        requestOptions
-      )
-        .then((response) => response.text())
-        .then((result) => console.log(result))
-        .catch((error) => console.error(error));
-    </script>
   </body>
 </html>

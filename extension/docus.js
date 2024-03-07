@@ -1,25 +1,21 @@
-// this is the code which will be injected into a given page...
-
-(function () {
-  // just place a div at top right
+function inyectar() {
   var div = document.createElement("div");
   div.style.position = "fixed";
   div.style.top = 0;
   div.style.right = 0;
   div.innerHTML = ` 
-<html>
-<img id="sig_image" style="display: none; margin: auto" />
-
-<canvas id="output-canvas" style="display: none"></canvas>
-</html>
-
-
-`;
+  <html>
+  <img id="sig_image" style="display: none; margin: auto" />
+  
+  <canvas id="output-canvas" style="display: none"></canvas>
+  </html>
+  
+  
+  `;
   document.body.appendChild(div);
 
   let inputSeleccionado = null;
 
-  //find all input files and add a custom button before them
   const inputsCanvas = document.querySelectorAll("#signature");
   const inputs = document.querySelectorAll("input[type=file]");
 
@@ -36,19 +32,17 @@
     button.onclick = (e) => {
       e.preventDefault();
 
-      //captureFromCanvas();
-      captureFromSTU();
+      captureFromCanvas();
+      //captureFromSTU();
       // inputSeleccionado = input;
     };
     elemento.before(button);
 
-    //is elemento a input file
     if (elemento.type === "file") {
       inputSeleccionado = elemento;
     }
   }
 
-  //get the image base64 data and put it in the canvas
   const img = document.getElementById("sig_image");
   const canvas = document.getElementById("output-canvas");
   const docusCanvas = document.getElementsByClassName("jSignature")[0];
@@ -61,11 +55,9 @@
 
     ctx.drawImage(img, 0, 0);
 
-    //copy the image from canvas to docusCanvas
     const docusCtx = docusCanvas.getContext("2d");
     docusCtx.drawImage(canvas, 0, 0);
 
-    // //save the image in the canvas
     const dataURL = canvas.toDataURL("image/png");
 
     $("#signature_capture").val(dataURL);
@@ -74,28 +66,16 @@
 
     inputSeleccionado.style.backgroundColor = "green";
     inputSeleccionado.files = dataURLtoFile(dataURL, "firma.png");
-
-    // console.log(dataURL);
-
-    // const a = document.createElement("a");
-    // a.href = dataURL;
-    // a.download = "signature.png";
-    // a.click();
   };
 
   console.log("Inyectado 💉");
-})();
-function convertirCanvasAInputFile(canvas, fileInput) {
-  // Convertir el contenido del canvas en un Blob
-  canvas.toBlob(function (blob) {
-    // Crear un archivo desde el Blob
-    const file = new File([blob], "imagen.png", { type: "image/png" });
+}
 
-    // Crear un DataTransfer y agregar el archivo
+function convertirCanvasAInputFile(canvas, fileInput) {
+  canvas.toBlob(function (blob) {
+    const file = new File([blob], "imagen.png", { type: "image/png" });
     const dataTransfer = new DataTransfer();
     dataTransfer.items.add(file);
-
-    // Asignar el DataTransfer al input file
     fileInput.files = dataTransfer.files;
   }, "image/png");
 }
