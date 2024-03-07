@@ -32,8 +32,8 @@ function inyectar() {
     button.onclick = (e) => {
       e.preventDefault();
 
-      captureFromCanvas();
-      //captureFromSTU();
+      // captureFromCanvas();
+      captureFromSTU();
       // inputSeleccionado = input;
     };
     elemento.before(button);
