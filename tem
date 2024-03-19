@@ -1,0 +1,46 @@
+// Función para convertir una cadena base64 en un Blob
+function base64toBlob(base64Data, contentType) {
+    contentType = contentType || '';
+    var sliceSize = 1024;
+    var byteCharacters = atob(base64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+}
+
+// Obtener la cadena base64 de la imagen
+var base64Image = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII';
+
+// Convertir la cadena base64 en un Blob
+var blob = base64toBlob(base64Image.replace(/^data:image\/(png|jpg);base64,/, ''), 'image/png');
+
+// Crear un objeto File a partir del Blob
+var file = new File([blob], 'image.png', { type: 'image/png' });
+
+// Crear un objeto FileList
+var fileList = new DataTransfer();
+fileList.items.add(file);
+
+
+// Asignar el objeto FileList al input file usando jQuery
+$('#cropzee-input')[0].files = fileList.files;
+let original = window.cropzeeGetImage;
+
+window.cropzeeGetImage  = ()=>{
+    return base64Image
+}
+$('#base64Load').val(base64Image);

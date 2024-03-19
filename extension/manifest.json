@@ -3,14 +3,14 @@
   "name": "Firmador de documentos",
   "author": "Jean Rodríguez @ dekru.co",
   "version": "1.0",
-  "description": "Implementación de SDK de WACOM",
+  "description": "Implementación de SDK de WACOM y huella digital-persona",
   "permissions": ["tabs", "activeTab", "scripting"],
 
   "host_permissions": ["<all_urls>"],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content_script.js"]
+      "js": ["cargador.js"]
     }
   ],
   "web_accessible_resources": [
