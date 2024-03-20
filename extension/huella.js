@@ -1,5 +1,7 @@
-const huellaSDK = new Fingerprint.WebApi();
-
+let huellaSDK;
+window.onload = function () {
+  huellaSDK = new FingerprintSdkTest();
+};
 huellaSDK.onDeviceConnected = function (e) {
   console.log("Lector de huella conectado");
   // Iniciar la captura una vez que el dispositivo esté disponible
