@@ -3,12 +3,12 @@ function checkDeviceAvailabilityAndStartCapture() {
     console.log("Iniciando captura de huella");
     const huellaSDK = new Fingerprint.WebApi();
     let calidad = "";
-
+    let valor = "";
     // Verificar la disponibilidad del dispositivo
     huellaSDK.onDeviceConnected = function (e) {
       console.log("Lector de huella conectado");
       // Iniciar la captura una vez que el dispositivo esté disponible
-      huellaSDK.startAcquisition(Fingerprint.SampleFormat.PngImage);
+      huellaSDK.startAcquisition(Fingerprint.SampleFormat.PngImage, valor);
     };
 
     huellaSDK.onDeviceDisconnected = function (e) {
