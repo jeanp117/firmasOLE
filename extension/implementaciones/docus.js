@@ -109,7 +109,9 @@ function crearBotonHuella(input) {
       if (calidad == "Good") {
         huella = Fingerprint.b64UrlTo64(sample[sample.length - 1]);
         console.log("Huella", huella);
-        document.getElementById("huellaImagen").src = huella;
+        document.getElementById(
+          "huellaImagen"
+        ).src = `data:image/png;base64,${huella}`;
         // insertarBase64EnCanvas(huella, 320, 240);
         // cerrarModal();
         huellaSDK.stopAcquisition();
