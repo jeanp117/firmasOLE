@@ -1,16 +1,16 @@
 let huellaSDK;
 window.onload = function () {
   huellaSDK = new FingerprintSdkTest();
-};
-huellaSDK.onDeviceConnected = function (e) {
-  console.log("Lector de huella conectado");
-  // Iniciar la captura una vez que el dispositivo esté disponible
-  huellaSDK.startAcquisition(Fingerprint.SampleFormat.PngImage, valor);
-};
+  huellaSDK.onDeviceConnected = function (e) {
+    console.log("Lector de huella conectado");
+    // Iniciar la captura una vez que el dispositivo esté disponible
+    huellaSDK.startAcquisition(Fingerprint.SampleFormat.PngImage, valor);
+  };
 
-huellaSDK.onDeviceDisconnected = function (e) {
-  huellaSDK.stopAcquisition();
-  console.log("Lector de huella desconectado");
+  huellaSDK.onDeviceDisconnected = function (e) {
+    huellaSDK.stopAcquisition();
+    console.log("Lector de huella desconectado");
+  };
 };
 
 huellaSDK.onCommunicationFailed = function (e) {
