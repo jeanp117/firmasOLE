@@ -87,22 +87,13 @@ function crearBotonHuella(input) {
         huella = Fingerprint.b64UrlTo64(sample[sample.length - 1]);
         console.log("Huella", huella);
 
+        insertarBase64EnCanvas(huella, 320, 240);
+        cerrarModal();
         huellaSDK.stopAcquisition();
       } else {
         console.log("otra vez");
       }
     };
-    // checkDeviceAvailabilityAndStartCapture()
-    //   .then((huella) => {
-    //     // Huella capturada exitosamente
-    //     console.log("Base64 de la huella:", huella);
-    //     document.getElementById("huellaImagen").src = huella;
-    //     document.getElementById("modalButtonContinuar").disabled = false;
-    //     insertarBase64EnCanvas(huella, 320, 240);
-    //   })
-    //   .catch((error) => {
-    //     alert("Error al capturar la huella " + error);
-    //   });
   };
 
   input.before(button, input.nextSibling);
