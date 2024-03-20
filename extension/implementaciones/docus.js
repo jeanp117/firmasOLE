@@ -57,7 +57,7 @@ function crearBotonFirmar(input) {
     e.preventDefault();
     //Invoca al SDK de wacom, al obtener una firma, se hace tratamiento de la imagen y se devuelve la nueva imagen en base64
     captureSignature({
-      useSTU: false,
+      useSTU: true,
       onCanvasAdquired: (base64) => insertarBase64EnCanvas(base64, 400, 300),
     });
   };
