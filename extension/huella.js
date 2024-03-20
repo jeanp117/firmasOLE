@@ -10,7 +10,7 @@ huellaSDK.onDeviceConnected = function (e) {
 
 huellaSDK.onDeviceDisconnected = function (e) {
   huellaSDK.stopAcquisition();
-  reject("Device disconnected");
+  console.log("Lector de huella desconectado");
 };
 
 huellaSDK.onCommunicationFailed = function (e) {
