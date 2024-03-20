@@ -24,8 +24,6 @@ Module.onRuntimeInitialized = (_) => {
           if (!navigator.hid) {
             alert("WebHID no soportado");
           }
-
-          inyectar();
         }
       });
       promise.catch((error) => {

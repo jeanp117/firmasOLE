@@ -22,6 +22,7 @@ function inyectar() {
   `;
   document.head.appendChild(style);
 }
+inyectar();
 
 //implementación de la firma y huella en Docus exclusivamente
 function insertarBase64EnCanvas(base64, width, height) {
