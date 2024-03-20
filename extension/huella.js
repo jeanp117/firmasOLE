@@ -1,4 +1,7 @@
-let huellaSDK = new Fingerprint.WebApi();
+let huellaSDK;
+window.onload = function () {
+  huellaSDK = new Fingerprint.WebApi();
+};
 
 huellaSDK.onDeviceConnected = function (e) {
   // Detects if the device is connected for which acquisition started
