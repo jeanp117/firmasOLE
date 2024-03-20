@@ -1,26 +1,28 @@
+const huellaSDK = new Fingerprint.WebApi();
+
+huellaSDK.onDeviceConnected = function (e) {
+  console.log("Lector de huella conectado");
+  // Iniciar la captura una vez que el dispositivo esté disponible
+  huellaSDK.startAcquisition(Fingerprint.SampleFormat.PngImage, valor);
+};
+
+huellaSDK.onDeviceDisconnected = function (e) {
+  huellaSDK.stopAcquisition();
+  reject("Device disconnected");
+};
+
+huellaSDK.onCommunicationFailed = function (e) {
+  // Detects if there is a failure in communicating with U.R.U web SDK
+  huellaSDK.stopAcquisition();
+  reject("Communication Failed");
+};
+
 function checkDeviceAvailabilityAndStartCapture() {
   return new Promise((resolve, reject) => {
     console.log("Iniciando captura de huella");
-    const huellaSDK = new Fingerprint.WebApi();
     let calidad = "";
     let valor = "";
     // Verificar la disponibilidad del dispositivo
-    huellaSDK.onDeviceConnected = function (e) {
-      console.log("Lector de huella conectado");
-      // Iniciar la captura una vez que el dispositivo esté disponible
-      huellaSDK.startAcquisition(Fingerprint.SampleFormat.PngImage, valor);
-    };
-
-    huellaSDK.onDeviceDisconnected = function (e) {
-      huellaSDK.stopAcquisition();
-      reject("Device disconnected");
-    };
-
-    huellaSDK.onCommunicationFailed = function (e) {
-      // Detects if there is a failure in communicating with U.R.U web SDK
-      huellaSDK.stopAcquisition();
-      reject("Communication Failed");
-    };
 
     huellaSDK.onSamplesAcquired = function (s) {
       var sample = JSON.parse(s.samples);
