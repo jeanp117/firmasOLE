@@ -58,7 +58,7 @@ function crearBotonFirmar(input) {
     //Invoca al SDK de wacom, al obtener una firma, se hace tratamiento de la imagen y se devuelve la nueva imagen en base64
     captureSignature({
       useSTU: false,
-      onCanvasAdquired: (base64) => insertarBase64EnCanvas(base64, 320, 240),
+      onCanvasAdquired: (base64) => insertarBase64EnCanvas(base64, 400, 300),
     });
   };
 
@@ -169,7 +169,7 @@ function abrirModal() {
 <div id="modalButtons">
   <button  onclick="cerrarModal()">Cancelar</button>
 
-  <button id="modalButtonContinuar" disabled onclick="aceptarImagen()" >Continuar</button>
+  <button id="modalButtonContinuar" disabled  >Continuar</button>
 </div>
 </div>
   `;
