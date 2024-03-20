@@ -78,17 +78,18 @@ function crearBotonHuella(input) {
     e.preventDefault();
 
     abrirModal();
-    checkDeviceAvailabilityAndStartCapture()
-      .then((huella) => {
-        // Huella capturada exitosamente
-        console.log("Base64 de la huella:", huella);
-        document.getElementById("huellaImagen").src = huella;
-        document.getElementById("modalButtonContinuar").disabled = false;
-        insertarBase64EnCanvas(huella, 320, 240);
-      })
-      .catch((error) => {
-        alert("Error al capturar la huella " + error);
-      });
+    onStart();
+    // checkDeviceAvailabilityAndStartCapture()
+    //   .then((huella) => {
+    //     // Huella capturada exitosamente
+    //     console.log("Base64 de la huella:", huella);
+    //     document.getElementById("huellaImagen").src = huella;
+    //     document.getElementById("modalButtonContinuar").disabled = false;
+    //     insertarBase64EnCanvas(huella, 320, 240);
+    //   })
+    //   .catch((error) => {
+    //     alert("Error al capturar la huella " + error);
+    //   });
   };
 
   input.before(button, input.nextSibling);
