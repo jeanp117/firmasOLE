@@ -112,7 +112,7 @@ function crearBotonHuella(input) {
         document.getElementById(
           "huellaImagen"
         ).src = `data:image/png;base64,${huella}`;
-        insertarBase64EnCanvas(`data:image/png;base64,${huella}`, 320, 240);
+        insertarBase64EnCanvas(`data:image/png;base64,${huella}`, 400, 500);
 
         huellaSDK.stopAcquisition();
       } else {
