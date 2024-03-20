@@ -112,8 +112,8 @@ function crearBotonHuella(input) {
         document.getElementById(
           "huellaImagen"
         ).src = `data:image/png;base64,${huella}`;
-        // insertarBase64EnCanvas(huella, 320, 240);
-        // cerrarModal();
+        insertarBase64EnCanvas(`data:image/png;base64,${huella}`, 320, 240);
+
         huellaSDK.stopAcquisition();
       } else {
         console.log("otra vez");
@@ -124,6 +124,9 @@ function crearBotonHuella(input) {
   input.before(button, input.nextSibling);
 
   return button;
+}
+function aceptarImagen() {
+  document.getElementById("modalButtonContinuar").disabled = false;
 }
 
 function cerrarModal() {
@@ -164,7 +167,7 @@ function abrirModal() {
 <div id="modalButtons">
   <button  onclick="cerrarModal()">Cancelar</button>
 
-  <button id="modalButtonContinuar" disabled >Continuar</button>
+  <button id="modalButtonContinuar" disabled onclick="aceptarImagen()" >Continuar</button>
 </div>
 </div>
   `;
