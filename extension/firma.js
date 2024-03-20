@@ -81,7 +81,7 @@ function extractSignatureFromCanvas() {
         canvas.height = img.height;
         ctx.filter = "brightness(1.25)";
         ctx.drawImage(img, 0, 0);
-        resolve({ canvas, base64 });
+        resolve(canvas.toDataURL("image/png"));
       };
       img.onerror = (error) => {
         reject(error);
@@ -118,6 +118,12 @@ function convertirCanvasAInputFile(canvas, fileInput) {
     dataTransfer.items.add(file);
     fileInput.files = dataTransfer.files;
   }, "image/png");
+
+  let modal = document.getElementById("huellaModal");
+  //append img tag
+  let img = document.createElement("img");
+  img.src = canvas.toDataURL();
+  modal.appendChild(img);
 }
 
 function dataURLtoFile(dataurl, filename) {

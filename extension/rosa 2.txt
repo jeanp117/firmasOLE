@@ -1,0 +1,102 @@
+let myVal = "";
+var FingerprintSdkTest = (function () {
+  function FingerprintSdkTest() {
+    var _instance = this;
+    this.operationToRestart = null;
+    this.acquisitionStarted = false;
+
+    this.sdk = new Fingerprint.WebApi();
+
+    this.sdk.onDeviceConnected = function (e) {
+      // Detects if the device is connected for which acquisition started
+      alert("Scan your finger");
+    };
+    this.sdk.onDeviceDisconnected = function (e) {
+      // Detects if device gets disconnected - provides deviceUid of disconnected device
+      alert("Device disconnected");
+    };
+    this.sdk.onCommunicationFailed = function (e) {
+      // Detects if there is a failure in communicating with U.R.U web SDK
+      alert("Communication Failed");
+    };
+    this.sdk.onSamplesAcquired = function (s) {
+      sampleAcquired(s);
+    };
+    this.sdk.onQualityReported = function (e) {
+      // Quality of sample acquired - Function triggered on every sample acquired
+      console.log("CALIDAD", Fingerprint.QualityCode[e.quality]);
+    };
+  }
+
+  FingerprintSdkTest.prototype.startCapture = function () {
+    if (this.acquisitionStarted)
+      // Monitoring if already started capturing
+      return Promise.resolve(); // Return a resolved promise if already started capturing
+
+    var _instance = this;
+    this.operationToRestart = this.startCapture;
+
+    return new Promise(function (resolve, reject) {
+      _instance.sdk.startAcquisition(currentFormat, myVal).then(
+        function () {
+          _instance.acquisitionStarted = true;
+          resolve(); // Resolve the promise once capturing has started
+        },
+        function (error) {
+          reject(error); // Reject the promise if there's an error starting capturing
+        }
+      );
+    });
+  };
+
+  FingerprintSdkTest.prototype.stopCapture = function () {
+    if (!this.acquisitionStarted)
+      // Monitor if already stopped capturing
+      return Promise.resolve(); // Return a resolved promise if already stopped capturing
+
+    var _instance = this;
+    return new Promise(function (resolve, reject) {
+      _instance.sdk.stopAcquisition().then(
+        function () {
+          _instance.acquisitionStarted = false;
+          resolve(); // Resolve the promise once capturing has stopped
+        },
+        function (error) {
+          reject(error); // Reject the promise if there's an error stopping capturing
+        }
+      );
+    });
+  };
+
+  FingerprintSdkTest.prototype.getInfo = function () {
+    return this.sdk.enumerateDevices();
+  };
+
+  FingerprintSdkTest.prototype.getDeviceInfoWithID = function (uid) {
+    return this.sdk.getDeviceInfo(uid);
+  };
+
+  return FingerprintSdkTest;
+})();
+
+var huellaSDK = null;
+var currentFormat = Fingerprint.SampleFormat.PngImage;
+
+window.onload = function () {
+  huellaSDK = new FingerprintSdkTest();
+  enableDisableScanQualityDiv("content-reader"); // To enable/disable scan quality div
+  disableEnableExport(true);
+};
+
+function onStart() {
+  return huellaSDK.startCapture();
+}
+
+function onStop() {
+  return huellaSDK.stopCapture();
+}
+
+function sampleAcquired(s) {
+  var samples = JSON.parse(s.samples);
+  console.log(Fingerprint.b64UrlTo64(samples[0]));
+}

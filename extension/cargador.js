@@ -11,21 +11,24 @@ let scripts = [
   "firma.js",
   "huella.js",
   "implementaciones/docus.js",
+  "imagenes.js",
 ];
 
-var sample = document.createElement("script");
+//load after the page is ready to avoid conflicts
 
-let hostList = ["grupo-esperanza.docus.com.co", "orglaesperanza.com.co"];
+window.onload = function () {
+  let hostList = ["grupo-esperanza.docus.com.co", "orglaesperanza.com.co"];
 
-let currentHost = window.location.host;
-if (hostList.includes(currentHost)) {
-  scripts.forEach((script) => {
-    var s = document.createElement("script");
-    // Para que esto funcione deberías añadir "script.js" a web_accessible_resources en manifest.json
-    s.src = chrome.runtime.getURL(script);
-    s.onload = function () {
-      this.remove();
-    };
-    (document.head || document.documentElement).appendChild(s);
-  });
-}
+  let currentHost = window.location.host;
+  if (hostList.includes(currentHost)) {
+    scripts.forEach((script) => {
+      var s = document.createElement("script");
+      // Para que esto funcione deberías añadir "script.js" a web_accessible_resources en manifest.json
+      s.src = chrome.runtime.getURL(script);
+      s.onload = function () {
+        this.remove();
+      };
+      (document.head || document.documentElement).appendChild(s);
+    });
+  }
+};
