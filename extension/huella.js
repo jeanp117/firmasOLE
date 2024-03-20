@@ -23,3 +23,22 @@ function sampleAcquired(s) {
   var samples = JSON.parse(s.samples);
   console.log(Fingerprint.b64UrlTo64(samples[0]));
 }
+
+function leerHuella() {
+  huellaSDK.startAcquisition(Fingerprint.SampleFormat.PngImage, "");
+}
+function detenerLectura() {
+  huellaSDK.stopAcquisition();
+}
+
+function leer() {
+  return new Promise((resolve, reject) => {
+    leerHuella();
+    huellaSDK.onSamplesAcquired = function (s) {
+      var samples = JSON.parse(s.samples);
+      resolve(Fingerprint.b64UrlTo64(samples[0]));
+      console.log(Fingerprint.b64UrlTo64(samples[0]));
+      detenerLectura();
+    };
+  });
+}

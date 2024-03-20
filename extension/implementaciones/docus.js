@@ -78,7 +78,7 @@ function crearBotonHuella(input) {
     e.preventDefault();
 
     abrirModal();
-    onStart();
+    leer();
     // checkDeviceAvailabilityAndStartCapture()
     //   .then((huella) => {
     //     // Huella capturada exitosamente
